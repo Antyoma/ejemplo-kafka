@@ -21,8 +21,11 @@ const findSchemaBySubjectAndVersion = ({ version, subject }) => registry.getRegi
 
 const sendMessageToTopic = async ({ key, topic, encodePayloadId, payload }) => {
   try {
-
+    await producer.connect()
+    const encodedPayload = await registry.encode(encodePayloadId, payload)
   
+
+    
  } catch (err) {
  }
 }
