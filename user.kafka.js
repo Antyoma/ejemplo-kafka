@@ -1,4 +1,4 @@
-const { findSchemaBySubjectAndVersion, sendMessageToTopic } = require('./kafka');
+const { findSchemaBySubjectAndVersion, sendMessageToTopic, readMessageFromTopic } = require('./kafka');
 
 const topic = 'info-users';
 const version = 2;
@@ -17,4 +17,11 @@ const writeUserDataTokafka = async (payload) => {
     }    
 }
 
+const readMessages = () => {
+    readMessageFromTopic(topic, (data) => {
+        console.log(data, 'data desde kafka')
+    })
+}
+
 module.exports.writeUserDataTokafka = writeUserDataTokafka
+module.exports.readMessages = readMessages

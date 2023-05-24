@@ -35,5 +35,26 @@ const sendMessageToTopic = async ({ key, topic, encodePayloadId, payload }) => {
   }
 }
 
+const readMessageFromTopic = async (topic, fun) => {
+    await consumer.connect()
+    await consumer.subscribe({ topic })
+    await consumer.run({
+        eachMessage: async ([ message ]) => {
+            try {
+            const decodedMessage = {
+                ...message,
+                // key: await registry.decode(message.key),
+                value: await registry.decode(message.value)
+            }
+
+            func(decodedMessage)
+            } catch (err) {
+                console.error(err)
+            }
+        },
+    })
+}
+
 module.exports.findSchemaBySubjectAndVersion = findSchemaBySubjectAndVersion
 module.exports.sendMessageToTopic = sendMessageToTopic
+module.exports.readMessageFromTopic = readMessageFromTopic
