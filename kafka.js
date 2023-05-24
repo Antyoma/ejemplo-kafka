@@ -24,9 +24,14 @@ const sendMessageToTopic = async ({ key, topic, encodePayloadId, payload }) => {
     await producer.connect()
     const encodedPayload = await registry.encode(encodePayloadId, payload)
   
+    const responses = await producer.send({
+        topic: topic,
+        messages: [{key, value: encodePayload }]
+    })
 
-    
+    console.info('Operación exitosa escribiendo datos a Kafka', responses)
  } catch (err) {
+    console.error('Error al intentar escribir datos en kafka', err)
  }
 }
 
